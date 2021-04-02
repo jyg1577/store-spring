@@ -1,10 +1,13 @@
+package com.example.store.cart;
 
-package com.example.store.order;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,20 +19,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PurchaseOrderDetail {
+public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String productname;
-	private long price;
-	private long quantity;
-	private String imageName;
-	private String contentType;
+	private String userId;
+	private String userName;
 
-	private long purchaseOrderId;
+	private long createdTime;
 
-	public String getDataUrl() {
-		return "http://localhost:8080" + "/Purchase-images" + this.id;
-	}
+	@OneToMany
+	@JoinColumn(name = "purchaseOrderId")
+	private List<CartDetail> details;
+
 }

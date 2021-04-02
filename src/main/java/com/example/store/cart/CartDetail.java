@@ -1,5 +1,4 @@
-
-package com.example.store.order;
+package com.example.store.cart;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class PurchaseOrderDetail {
+public class CartDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -24,12 +23,11 @@ public class PurchaseOrderDetail {
 	private String productname;
 	private long price;
 	private long quantity;
+	private long purchaseOrderId;
 	private String imageName;
 	private String contentType;
 
-	private long purchaseOrderId;
-
 	public String getDataUrl() {
-		return "http://localhost:8080" + "/Purchase-images" + this.id;
+		return "http://localhost:8080" + "/product-images" + this.id;
 	}
 }

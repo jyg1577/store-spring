@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +39,27 @@ public class ProductController {
 		this.productImageRepo = productImageRepo;
 	}
 
+	// id로 조회
+	@GetMapping(value = "/products/{id}")
+	public Product getproductsId(@PathVariable("id") long id, HttpServletResponse res) {
+		if (productRepo.findById(id).orElse(null) == null) {
+			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+		Product reviewText = productRepo.findById(id).orElse(null);
+
+		return reviewText;
+	}
+
 	// product 목록 조회
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public List<Product> getProducts(HttpServletRequest req) {
 		return productRepo.findAll(Sort.by("id").descending());
+	}
+
+	@RequestMapping(value = "/products/name", method = RequestMethod.GET)
+	public List<Product> getProductsCatrgory(@RequestParam("keyword") String keyword, HttpServletRequest req) {
+		return productRepo.findByName(keyword);
 	}
 
 	// 상품명으로 상품 목록 조회

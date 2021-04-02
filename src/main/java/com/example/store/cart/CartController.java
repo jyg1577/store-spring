@@ -1,4 +1,4 @@
-package com.example.store.order;
+package com.example.store.cart;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,53 +24,52 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-public class PurchaseOrderController {
-	private PurchaseOrderRepository PurchaseOrderRepo;
-	private PurchaseOrderDetailRepository detailRepo;
+public class CartController {
+	private CartRepository CartRepo;
+	private CartDetailRepository CartdetailRepo;
 	private final Path FILE_PATH = Paths.get("Purchase_image");
 
 	@Autowired
-	public PurchaseOrderController(PurchaseOrderRepository PurchaseOrderRepo,
-			PurchaseOrderDetailRepository detailRepo) {
+	public CartController(CartRepository CartRepo, CartDetailRepository detailRepo) {
 
-		this.PurchaseOrderRepo = PurchaseOrderRepo;
-		this.detailRepo = detailRepo;
+		this.CartRepo = CartRepo;
+		this.CartdetailRepo = detailRepo;
 	}
 
-	@RequestMapping(value = "/PurchaseOrder", method = RequestMethod.POST)
-	public PurchaseOrder addPurchaseOrder(@RequestBody PurchaseOrder order) {
+	@RequestMapping(value = "/Cart", method = RequestMethod.POST)
+	public Cart addCart(@RequestBody Cart order) {
 		order.setUserId("2021");
 		order.setUserName("yeeun");
-		order.setUserAddress("jayaung");
+
 		order.setCreatedTime(new Date().getTime());
-		PurchaseOrderRepo.save(order);
+		CartRepo.save(order);
 		return order;
 	}
 
-	@RequestMapping(value = "/PurchaseOrder", method = RequestMethod.GET)
-	public List<PurchaseOrder> getProducts(HttpServletRequest req) {
-		return PurchaseOrderRepo.findAll(Sort.by("id").descending());
+	@RequestMapping(value = "/Cart", method = RequestMethod.GET)
+	public List<Cart> getProducts(HttpServletRequest req) {
+		return CartRepo.findAll(Sort.by("id").descending());
 	}
 
-	@RequestMapping(value = "/PurchaseOrder/{id}/PurchaseOrder-Details", method = RequestMethod.GET)
-	public List<PurchaseOrderDetail> getFeedFiles(@PathVariable("id") long id, HttpServletResponse res) {
+	@RequestMapping(value = "/Cart/{id}/Cart-Details", method = RequestMethod.GET)
+	public List<CartDetail> getFeedFiles(@PathVariable("id") long id, HttpServletResponse res) {
 
-		if (PurchaseOrderRepo.findById(id).orElse(null) == null) {
+		if (CartRepo.findById(id).orElse(null) == null) {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
 
-		List<PurchaseOrderDetail> PurchaseOrderDetails = detailRepo.findBypurchaseOrderId(id);
-		System.out.println(PurchaseOrderDetails);
+		List<CartDetail> CartDetails = CartdetailRepo.findBypurchaseOrderId(id);
+		System.out.println(CartDetails);
 
-		return PurchaseOrderDetails;
+		return CartDetails;
 	}
 
-	@RequestMapping(value = "/PurchaseOrder/{id}/purchase-images", method = RequestMethod.POST)
-	public PurchaseOrderDetail addPurchaseImage(@PathVariable("id") long id, @RequestPart("data") MultipartFile image,
+	@RequestMapping(value = "/Cart/{id}/Cart-images", method = RequestMethod.POST)
+	public CartDetail addPurchaseImage(@PathVariable("id") long id, @RequestPart("data") MultipartFile image,
 			HttpServletResponse res, @RequestParam("name") String name, @RequestParam("quantity") long quantity,
 			@RequestParam("price") long price) throws IOException {
-		if (PurchaseOrderRepo.findById(id).orElse(null) == null) {
+		if (CartRepo.findById(id).orElse(null) == null) {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
@@ -83,11 +82,10 @@ public class PurchaseOrderController {
 		// 파일 저장
 		FileCopyUtils.copy(image.getBytes(), new File(FILE_PATH.resolve(image.getOriginalFilename()).toString()));
 		// 파일 메타데이터 저장
-		PurchaseOrderDetail purchaseOrderDetail = PurchaseOrderDetail.builder().productname(name).quantity(quantity)
-				.price(price).purchaseOrderId(id).imageName(image.getOriginalFilename())
-				.contentType(image.getContentType()).build();
+		CartDetail purchaseOrderDetail = CartDetail.builder().productname(name).quantity(quantity).price(price)
+				.purchaseOrderId(id).imageName(image.getOriginalFilename()).contentType(image.getContentType()).build();
 
-		detailRepo.save(purchaseOrderDetail);
+		CartdetailRepo.save(purchaseOrderDetail);
 
 		return purchaseOrderDetail;
 
