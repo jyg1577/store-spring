@@ -5,6 +5,8 @@ server:
 # nohup java -jar -Dspring.profiles.active=prod myworkspace-0.0.1-SNAPSHOT.jar > myworkspace.log &
 
 spring:
+  application:
+    name: store
   profiles:
     active: default
   servlet:
@@ -25,19 +27,14 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-
-# 추가적인 속성
-api:
-  base-path: http://localhost:8080
-
-#prod 프로필
----
-spring:
-  profiles: prod
-  redis:
-    host: 13.124.221.31
-    port: 6379
-    password: foobared  
-  
-api:
-  base-path: http://ec2-13-124-221-31.ap-northeast-2.compute.amazonaws.com:8080
+  rabbitmq:
+    host: ec2-13-124-232-201.ap-northeast-2.compute.amazonaws.com
+    username: rabbitmq
+    password: password123
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.0.24:8761/eureka/
+  instance:
+    hostname: 192.168.0.46

@@ -13,5 +13,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	public List<Product> findByName(String name);
 
-	public List<Product> findByCreatedTimeLessThan(Long createdTime);
 }

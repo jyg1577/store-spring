@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PurchaseOrderDetailRepository extends JpaRepository<PurchaseOrderDetail, Long> {
 
-	List<PurchaseOrderDetail> findBypurchaseOrderId(long purchaseOrderId);
+	List<PurchaseOrderDetail> findByPurchaseOrderId(long purchaseOrderId);
 
 }

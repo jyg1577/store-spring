@@ -1,6 +1,5 @@
 package com.example.store.product;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -37,10 +36,6 @@ public class Product {
 
 	private String managerId;
 	private String businessNumber;
-
-	private long createdTime;
-	private long modifiedTime;
-	private Date deletedTime;
 
 	@OneToMany
 	@JoinColumn(name = "productId")

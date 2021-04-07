@@ -21,15 +21,10 @@ public class PurchaseOrderDetail {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String productname;
+	private String category;
+	private String code;
+	private long purchaseOrderId;
 	private long price;
 	private long quantity;
-	private String imageName;
-	private String contentType;
 
-	private long purchaseOrderId;
-
-	public String getDataUrl() {
-		return "http://localhost:8080" + "/Purchase-images" + this.id;
-	}
 }

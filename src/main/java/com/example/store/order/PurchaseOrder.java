@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import com.example.store.product.ProductImage;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,11 +24,12 @@ public class PurchaseOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private String userId;
+	private long amount;
 	private String userName;
 	private String userAddress;
+	private String status;
 
-	private long createdTime;
+	private String orderDate;
 
 	@OneToMany
 	@JoinColumn(name = "purchaseOrderId")
