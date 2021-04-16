@@ -23,19 +23,21 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String userId;
 	private String userName;
 	private String userAddress;
-
-	// 구매누르면 ture, 장바구니에만 있을시 false
-	private boolean purchaseState;
+	private String orderNumber;
+	// 구매누르면 true, 장바구니에만 있을시 false
+	private String purchaseState;
+	private String shortDescription;
 
 	private String category;
 	private String productName;
 	private long quantity;
 	private long price;
 
-	private long createdTime;
+	private String orderDate;
+
+	private String dataUrl;
 
 	@OneToMany
 	@JoinColumn(name = "purchaseOrderId")

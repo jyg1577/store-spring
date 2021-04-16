@@ -2,39 +2,60 @@ server:
   port: 8080
 
 
-# nohup java -jar -Dspring.profiles.active=prod myworkspace-0.0.1-SNAPSHOT.jar > myworkspace.log &
+
+# nohup java -jar -Dspring.profiles.active=prod store-0.0.1-SNAPSHOT.jar > store.log &
 
 spring:
-  application:
+  application: 
     name: store
-  profiles:
-    active: default
-  servlet:
+  servlet: 
   #multipart 파일처리 조건
-    multipart:
+    multipart: 
       max-file-size: -1
       max-request-size: -1
-  #database 접속 정보
+  #database 접속 정보 
   datasource:
          #jdbc:mysql://엔드포인트/데이터베이스?옵션...
     url: jdbc:mysql://mysql-1.ctfsmirgo2re.ap-northeast-2.rds.amazonaws.com/store?useUnicode=true&characterEncoding=utf-8
     username: admin
     password: password123!
     driver-class-name: com.mysql.cj.jdbc.Driver
+    
   jpa:
     show-sql: true # 데이터처리할 대 SQL문을 보여줌
     generate-ddl: true # 클래스 정의에 따른 테이블 및 데이터베이스 객체 생성     
-  redis:
-    host: 127.0.0.1
-    port: 6379
+#    properties: # 서버프로그램 설정 시작
+#      hibernate:
+#        '[generate_statistics]': true # 통계정보
+#        '[order_inserts]': true
+#        '[order_updates]': true
+#        jdbc: 
+#          '[batch_size]': 5     # 서버프로그램 설정 jpa 종료
+ 
   rabbitmq:
     host: ec2-13-124-232-201.ap-northeast-2.compute.amazonaws.com
     username: rabbitmq
     password: password123
-    
+
+
 eureka:
   client:
     service-url:
       defaultZone: http://192.168.0.24:8761/eureka/
   instance:
     hostname: 192.168.0.46
+    
+    
+---
+
+spring:
+  profiles: prod
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://52.78.12.251:8761/eureka/
+  instance:
+    hostname: 15.164.96.228   
+    
+    
